@@ -7,4 +7,6 @@ export interface Tile {
 
 export interface BoardState {
   board: Tile[][];
+  gameState: "playing" | "won" | "lost" | "idle";
+  numberOfMines: number;
 }

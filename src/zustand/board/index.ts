@@ -36,7 +36,7 @@ interface BoardStore {
 export const useBoardStore = create<BoardStore>()(
   persist(
     (set) => ({
-      state: { board: [] },
+      state: { board: [], gameState: "idle", numberOfMines: 0 },
       dispatch: (action: BoardActions) =>
         set((state) => ({ ...state, state: reducer(state.state, action) })),
     }),

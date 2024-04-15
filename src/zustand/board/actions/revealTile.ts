@@ -12,6 +12,10 @@ export const revealTileAction = (
 ): BoardState => {
   const { x, y } = action.payload;
 
+  if (state.board[x][y].isRevealed || state.board[x][y].isFlagged) {
+    return state;
+  }
+
   const board = state.board.map((row, rowIndex) =>
     row.map((tile, colIndex) => {
       if (rowIndex === x && colIndex === y) {
@@ -31,5 +35,9 @@ export const revealTileAction = (
     board[x][y].isRevealed = true;
   });
 
-  return { ...state, board };
+  return {
+    ...state,
+    board,
+    gameState: state.board[x][y].isMine ? "lost" : state.gameState,
+  };
 };

@@ -1,6 +1,13 @@
 import { findAdjacentZeroTiles } from "../../../utils/findAdjacentZeroTiles";
 import { BoardState } from "../types";
 
+function shuffleArray(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 const findAdjacentMines = (
   board: BoardState["board"],
   x: number,
@@ -32,21 +39,40 @@ export const firstClickAction = (
 ): BoardState => {
   const { x, y } = action.payload;
 
+  const tilesWhereMinesCanBe: { x: number; y: number }[] = [];
+
   const board = state.board.map((row, rowIndex) =>
     row.map((tile, colIndex) => {
       if (rowIndex === x && colIndex === y) {
         return { ...tile, isRevealed: true };
-      } else if (rowIndex - x <= 2 && colIndex - y <= 2) {
+      } else if (Math.abs(rowIndex - x) <= 2 && Math.abs(colIndex - y) <= 2) {
         return tile;
       } else {
-        return { ...tile, isMine: Math.random() > 0.75 };
+        tilesWhereMinesCanBe.push({ x: rowIndex, y: colIndex });
+        return tile;
       }
     })
   );
 
-  const boardWithAdjacentMines = board.map((row, i) =>
+  shuffleArray(tilesWhereMinesCanBe);
+
+  console.log(tilesWhereMinesCanBe);
+
+  const mines = tilesWhereMinesCanBe.slice(0, state.numberOfMines);
+
+  const boardWithMines = board.map((row, i) =>
     row.map((tile, j) => {
-      const adjacentMines = findAdjacentMines(board, i, j);
+      if (mines.some((mine) => mine.x === i && mine.y === j)) {
+        return { ...tile, isMine: true };
+      }
+
+      return tile;
+    })
+  );
+
+  const boardWithAdjacentMines = boardWithMines.map((row, i) =>
+    row.map((tile, j) => {
+      const adjacentMines = findAdjacentMines(boardWithMines, i, j);
 
       return { ...tile, adjacentMines };
     })

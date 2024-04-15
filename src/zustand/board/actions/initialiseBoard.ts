@@ -2,14 +2,14 @@ import { BoardState } from "../types";
 
 export type InitialiseBoard = {
   type: "INITIALISE_BOARD";
-  payload: { width: number };
+  payload: { width: number; numberOfMines: number };
 };
 
 export const initialiseBoardAction = (
   state: BoardState,
   action: InitialiseBoard
 ): BoardState => {
-  const { width } = action.payload;
+  const { width, numberOfMines } = action.payload;
 
   const widthNums = Array.from({ length: width }, (_, i) => i);
 
@@ -24,5 +24,5 @@ export const initialiseBoardAction = (
       }))
   );
 
-  return { ...state, board };
+  return { ...state, board, gameState: "playing", numberOfMines };
 };

@@ -12,7 +12,10 @@ const Game = ({}: IGame) => {
 
   const onClickStart = () => {
     setIsStarted(true);
-    dispatch({ type: "INITIALISE_BOARD", payload: { width: 15 } });
+    dispatch({
+      type: "INITIALISE_BOARD",
+      payload: { width: 15, numberOfMines: 20 },
+    });
   };
 
   const onTileClick = (event: React.MouseEvent, x: number, y: number) => {
