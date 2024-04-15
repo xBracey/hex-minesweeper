@@ -11,7 +11,8 @@
     "@ladle/react": "^4.0.2",
     "react": "^18.0.2",
     "react-dom": "^18.0.2",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

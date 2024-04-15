@@ -1,34 +1,32 @@
+import { Tile } from "../../zustand/board/types";
 import HexTile from "../HexTile";
 
 interface IHexGrid {
-  width: number;
+  board: Tile[][];
+  onTileClick: (event: React.MouseEvent, x: number, y: number) => void;
 }
 
 // Rhombus grid
-const HexGrid = ({ width }: IHexGrid) => {
-  const widthNums = Array.from({ length: width }, (_, i) => i);
-
+const HexGrid = ({ board, onTileClick }: IHexGrid) => {
   const tileWidth = 50;
-
-  const onGridClick = (i: number, j: number) => {
-    console.log(`HexTile at (${i}, ${j}) clicked`);
-  };
 
   return (
     <div className="flex">
       <div style={{ fontSize: 0 }}>
-        {widthNums.map((i) => (
+        {board.map((row, i) => (
           <div key={i} className="flex justify-center" style={{ fontSize: 0 }}>
-            {widthNums
-              .filter((_, j) => j < i)
-              .map((j) => (
-                <HexTile
-                  key={j}
-                  width={tileWidth}
-                  margin={2}
-                  onClick={() => onGridClick(i, j)}
-                />
-              ))}
+            {row.map((tile, j) => (
+              <HexTile
+                key={j}
+                width={tileWidth}
+                margin={2}
+                onClick={(e) => onTileClick(e, i, j)}
+                minesAdjacent={tile.adjacentMines}
+                isRevealed={tile.isRevealed}
+                isMine={tile.isMine}
+                isFlagged={tile.isFlagged}
+              />
+            ))}
           </div>
         ))}
       </div>
