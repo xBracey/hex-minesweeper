@@ -1,5 +1,14 @@
 import { Tile } from "../zustand/board/types";
 
+export const getAdjacentTiles = (x: number, y: number) => [
+  { x: x - 1, y: y },
+  { x: x + 1, y: y },
+  { x: x, y: y - 1 },
+  { x: x, y: y + 1 },
+  { x: x + 1, y: y + (x % 2 === 0 ? 1 : -1) },
+  { x: x - 1, y: y + (x % 2 === 0 ? 1 : -1) },
+];
+
 export const findAdjacentZeroTiles = (
   board: Tile[][],
   x: number,
@@ -27,14 +36,7 @@ export const findAdjacentZeroTiles = (
     ) {
       adjacentZeroTiles.push({ x, y });
 
-      queue.push(
-        { x: x - 1, y: y },
-        { x: x + 1, y: y },
-        { x: x, y: y - 1 },
-        { x: x, y: y + 1 },
-        { x: x - 1, y: y - 1 },
-        { x: x + 1, y: y + 1 }
-      );
+      queue.push(...getAdjacentTiles(x, y));
     } else if (!!board[x] && !!board[x][y]) {
       adjacentZeroTiles.push({ x, y });
     }

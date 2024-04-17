@@ -11,6 +11,10 @@ export const flagTileAction = (
 ): BoardState => {
   const { x, y } = action.payload;
 
+  if (state.board[x][y].isRevealed) {
+    return state;
+  }
+
   const board = state.board.map((row, rowIndex) =>
     row.map((tile, colIndex) => {
       if (rowIndex === x && colIndex === y) {

@@ -1,22 +1,14 @@
-import { useState } from "react";
 import { useBoardStore } from "../../zustand/board";
-import { Button } from "../Button";
 import HexGrid from "../HexGrid";
 
-interface IGame {}
+interface IGame {
+  isStarted: boolean;
+  firstTileClicked: boolean;
+  setFirstTileClicked: (value: boolean) => void;
+}
 
-const Game = ({}: IGame) => {
-  const [isStarted, setIsStarted] = useState(false);
-  const [firstTileClicked, setFirstTileClicked] = useState(false);
+const Game = ({ isStarted, firstTileClicked, setFirstTileClicked }: IGame) => {
   const { state, dispatch } = useBoardStore();
-
-  const onClickStart = () => {
-    setIsStarted(true);
-    dispatch({
-      type: "INITIALISE_BOARD",
-      payload: { width: 15, numberOfMines: 20 },
-    });
-  };
 
   const onTileClick = (event: React.MouseEvent, x: number, y: number) => {
     event.preventDefault();
@@ -35,9 +27,13 @@ const Game = ({}: IGame) => {
   };
 
   return (
-    <div>
-      <Button onClick={onClickStart}>Start</Button>
-
+    <div
+      className="mx-auto pb-4"
+      style={{
+        touchAction: state.gameState !== "playing" ? "none" : "auto",
+        pointerEvents: state.gameState !== "playing" ? "none" : "auto",
+      }}
+    >
       {isStarted && <HexGrid board={state.board} onTileClick={onTileClick} />}
     </div>
   );

@@ -3,6 +3,25 @@ import styles from "./index.module.css";
 import { Flag } from "../Icons/Flag";
 import { Mine } from "../Icons/Mine";
 
+const minesAdjacentToColor = (minesAdjacent: number) => {
+  switch (minesAdjacent) {
+    case 1:
+      return "text-blue-600";
+    case 2:
+      return "text-green-600";
+    case 3:
+      return "text-red-600";
+    case 4:
+      return "text-purple-600";
+    case 5:
+      return "text-yellow-600";
+    case 6:
+      return "text-pink-600";
+    default:
+      return "text-gray-600";
+  }
+};
+
 interface IHexTile {
   width: number;
   margin: number;
@@ -22,6 +41,8 @@ const HexTile = ({
   isFlagged,
   isRevealed,
 }: IHexTile) => {
+  const fontSize = width * 0.6;
+
   const hexStyle = {
     "--s": `${width}px`,
     "--m": `${margin}px`,
@@ -30,11 +51,14 @@ const HexTile = ({
   const hexStyleBorder = {
     "--s": `${width * 0.93}px`,
     "--m": `0px`,
+    fontSize,
   } as React.CSSProperties;
 
   return (
     <div
-      className={`${styles.HexTile} relative bg-black`}
+      className={`${styles.HexTile} relative bg-black ${minesAdjacentToColor(
+        minesAdjacent || 0
+      )}`}
       style={hexStyle}
       onClick={onClick}
       onContextMenu={(e) => {
@@ -45,24 +69,36 @@ const HexTile = ({
       <div
         className={`${
           styles.HexTile
-        } absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 ${
+        } absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 font-bold ${
           isRevealed ? "bg-gray-300" : "bg-gray-700"
         }`}
         style={hexStyleBorder}
       >
         {isRevealed && minesAdjacent !== undefined && !isMine && !isFlagged && (
-          <div className="text-bas absolute inset-0 flex items-center justify-center text-gray-900">
-            {minesAdjacent}
+          <div className="absolute inset-0 flex items-center justify-center">
+            {minesAdjacent > 0 ? minesAdjacent : ""}
           </div>
         )}
         {isRevealed && isMine && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <Mine className="h-6 w-6 text-red-600" />
+            <Mine
+              className="text-red-600"
+              style={{
+                width: fontSize,
+                height: fontSize,
+              }}
+            />
           </div>
         )}
         {isFlagged && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <Flag className="h-5 w-5 text-red-600" />
+            <Flag
+              className="text-red-600"
+              style={{
+                width: fontSize * 0.75,
+                height: fontSize * 0.75,
+              }}
+            />
           </div>
         )}
       </div>

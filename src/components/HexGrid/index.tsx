@@ -8,7 +8,11 @@ interface IHexGrid {
 
 // Rhombus grid
 const HexGrid = ({ board, onTileClick }: IHexGrid) => {
-  const tileWidth = 50;
+  const documentWidth = document.documentElement.clientWidth;
+
+  const boardSize = board.length;
+
+  const tileWidth = documentWidth / boardSize / 1.8;
 
   return (
     <div className="flex">
@@ -19,7 +23,7 @@ const HexGrid = ({ board, onTileClick }: IHexGrid) => {
               <HexTile
                 key={j}
                 width={tileWidth}
-                margin={2}
+                margin={tileWidth / 20}
                 onClick={(e) => onTileClick(e, i, j)}
                 minesAdjacent={tile.adjacentMines}
                 isRevealed={tile.isRevealed}

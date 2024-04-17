@@ -1,4 +1,7 @@
-import { findAdjacentZeroTiles } from "../../../utils/findAdjacentZeroTiles";
+import {
+  findAdjacentZeroTiles,
+  getAdjacentTiles,
+} from "../../../utils/findAdjacentZeroTiles";
 import { BoardState } from "../types";
 
 function shuffleArray(array: any[]) {
@@ -13,19 +16,19 @@ const findAdjacentMines = (
   x: number,
   y: number
 ): number => {
-  const minesXAdjacent =
-    board[x].filter((tile, i) => Math.abs(y - i) === 1 && tile.isMine).length ||
-    0;
+  const adjacentTiles = getAdjacentTiles(x, y);
 
-  const minesAbove =
-    board[x - 1]?.filter((tile, i) => (i === y || i === y - 1) && tile.isMine)
-      .length || 0;
+  const minesXAdjacent = (
+    adjacentTiles.map(({ x, y }) => {
+      if (!board[x] || !board[x][y]) {
+        return 0;
+      }
 
-  const minesBelow =
-    board[x + 1]?.filter((tile, i) => (i === y || i === y + 1) && tile.isMine)
-      .length || 0;
+      return board[x][y].isMine ? 1 : 0;
+    }) as number[]
+  ).reduce((acc, curr) => acc + curr, 0);
 
-  return minesXAdjacent + minesAbove + minesBelow;
+  return minesXAdjacent;
 };
 
 export type FirstClick = {
@@ -55,8 +58,6 @@ export const firstClickAction = (
   );
 
   shuffleArray(tilesWhereMinesCanBe);
-
-  console.log(tilesWhereMinesCanBe);
 
   const mines = tilesWhereMinesCanBe.slice(0, state.numberOfMines);
 

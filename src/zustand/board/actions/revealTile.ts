@@ -35,9 +35,17 @@ export const revealTileAction = (
     board[x][y].isRevealed = true;
   });
 
+  const hasWon = board.every((row) =>
+    row.every((tile) => tile.isRevealed || tile.isMine)
+  );
+
   return {
     ...state,
     board,
-    gameState: state.board[x][y].isMine ? "lost" : state.gameState,
+    gameState: state.board[x][y].isMine
+      ? "lost"
+      : hasWon
+      ? "won"
+      : state.gameState,
   };
 };

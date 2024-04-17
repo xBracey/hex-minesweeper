@@ -15,7 +15,7 @@ export const initialiseBoardAction = (
 
   const board = widthNums.map((i) =>
     widthNums
-      .filter((j) => j < i)
+      .filter((j) => j !== 0 || i % 2 !== 0)
       .map(() => ({
         isMine: false,
         isFlagged: false,

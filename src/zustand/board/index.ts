@@ -10,7 +10,14 @@ import { FirstClick, firstClickAction } from "./actions/firstClick";
 import { RevealTile, revealTileAction } from "./actions/revealTile";
 import { FlagTile, flagTileAction } from "./actions/flagTile";
 
-type BoardActions = InitialiseBoard | FirstClick | RevealTile | FlagTile;
+type Reset = { type: "RESET" };
+
+type BoardActions =
+  | InitialiseBoard
+  | FirstClick
+  | RevealTile
+  | FlagTile
+  | Reset;
 
 const reducer = (state: BoardState, action: BoardActions): BoardState => {
   switch (action.type) {
@@ -25,6 +32,9 @@ const reducer = (state: BoardState, action: BoardActions): BoardState => {
 
     case "FLAG_TILE":
       return flagTileAction(state, action);
+
+    case "RESET":
+      return { board: [], gameState: "idle", numberOfMines: 0 };
   }
 };
 

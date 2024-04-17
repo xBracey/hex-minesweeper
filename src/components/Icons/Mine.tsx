@@ -1,4 +1,10 @@
-export const Mine = ({ className }: { className: string }) => (
+export const Mine = ({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) => (
   <svg
     width="280"
     height="280"
@@ -6,6 +12,7 @@ export const Mine = ({ className }: { className: string }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    style={style}
   >
     <circle cx="140" cy="140" r="100" fill="currentColor" />
     <rect x="130" width="20" height="280" fill="currentColor" />
