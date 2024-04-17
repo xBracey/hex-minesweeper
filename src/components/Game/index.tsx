@@ -15,8 +15,6 @@ const Game = ({ isStarted, firstTileClicked, setFirstTileClicked }: IGame) => {
     x: number,
     y: number
   ) => {
-    console.log("onTileClick", revealOrFlag, x, y);
-
     if (revealOrFlag === "flag") {
       dispatch({ type: "FLAG_TILE", payload: { x, y } });
       return;

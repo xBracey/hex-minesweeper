@@ -81,7 +81,6 @@ const HexTile = ({
           navigator.vibrate(200);
           return;
         }
-        console.log("onContextMenu");
         onFlag();
       }}
       {...attrs}

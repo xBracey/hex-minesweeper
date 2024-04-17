@@ -15,8 +15,7 @@ const HexGrid = ({ board, onTileClick }: IHexGrid) => {
 
   const boardSize = board.length;
 
-  const tileWidth =
-    isMobile || !windowWidth ? 50 : windowWidth / boardSize / 1.8;
+  const tileWidth = isMobile || !windowWidth ? 50 : windowWidth / boardSize / 2;
 
   return (
     <div
@@ -25,7 +24,7 @@ const HexGrid = ({ board, onTileClick }: IHexGrid) => {
         isMobile
           ? {
               maxWidth: "calc(100vw - 60px)",
-              maxHeight: "calc(100vh - 180px)",
+              maxHeight: "calc(100dvh - 180px)",
             }
           : {}
       }
