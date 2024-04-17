@@ -1,7 +1,7 @@
-import { CSSProperties } from "react";
 import styles from "./index.module.css";
 import { Flag } from "../Icons/Flag";
 import { Mine } from "../Icons/Mine";
+import { useLongPress, useWindowSize } from "@uidotdev/usehooks";
 
 const minesAdjacentToColor = (minesAdjacent: number) => {
   switch (minesAdjacent) {
@@ -25,7 +25,7 @@ const minesAdjacentToColor = (minesAdjacent: number) => {
 interface IHexTile {
   width: number;
   margin: number;
-  onClick?: (event: React.MouseEvent) => void;
+  onClick?: (revealOrFlag: "reveal" | "flag") => void;
   minesAdjacent?: number;
   isMine?: boolean;
   isFlagged?: boolean;
@@ -54,17 +54,37 @@ const HexTile = ({
     fontSize,
   } as React.CSSProperties;
 
+  const onReveal = () => onClick && onClick("reveal");
+  const onFlag = () => onClick && onClick("flag");
+
+  const { width: windowWidth } = useWindowSize();
+
+  const attrs = useLongPress(
+    () => {
+      onFlag();
+    },
+    { threshold: 200 }
+  );
+
+  const isMobile = windowWidth && windowWidth < 768;
+
   return (
     <div
       className={`${styles.HexTile} relative bg-black ${minesAdjacentToColor(
         minesAdjacent || 0
       )}`}
       style={hexStyle}
-      onClick={onClick}
+      onClick={onReveal}
       onContextMenu={(e) => {
         e.preventDefault();
-        onClick && onClick(e);
+        if (isMobile) {
+          navigator.vibrate(200);
+          return;
+        }
+        console.log("onContextMenu");
+        onFlag();
       }}
+      {...attrs}
     >
       <div
         className={`${

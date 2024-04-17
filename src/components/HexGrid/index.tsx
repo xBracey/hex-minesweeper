@@ -1,21 +1,35 @@
+import { useWindowSize } from "@uidotdev/usehooks";
 import { Tile } from "../../zustand/board/types";
 import HexTile from "../HexTile";
+import styles from "./index.module.css";
 
 interface IHexGrid {
   board: Tile[][];
-  onTileClick: (event: React.MouseEvent, x: number, y: number) => void;
+  onTileClick: (revealOrFlag: "reveal" | "flag", x: number, y: number) => void;
 }
 
 // Rhombus grid
 const HexGrid = ({ board, onTileClick }: IHexGrid) => {
-  const documentWidth = document.documentElement.clientWidth;
+  const { width: windowWidth } = useWindowSize();
+  const isMobile = windowWidth && windowWidth < 768;
 
   const boardSize = board.length;
 
-  const tileWidth = documentWidth / boardSize / 1.8;
+  const tileWidth =
+    isMobile || !windowWidth ? 50 : windowWidth / boardSize / 1.8;
 
   return (
-    <div className="flex">
+    <div
+      className={`${styles.HexGrid} flex overflow-scroll pb-4 md:overflow-hidden`}
+      style={
+        isMobile
+          ? {
+              maxWidth: "calc(100vw - 60px)",
+              maxHeight: "calc(100vh - 180px)",
+            }
+          : {}
+      }
+    >
       <div style={{ fontSize: 0 }}>
         {board.map((row, i) => (
           <div key={i} className="flex justify-center" style={{ fontSize: 0 }}>
@@ -24,7 +38,7 @@ const HexGrid = ({ board, onTileClick }: IHexGrid) => {
                 key={j}
                 width={tileWidth}
                 margin={tileWidth / 20}
-                onClick={(e) => onTileClick(e, i, j)}
+                onClick={(revealOrFlag) => onTileClick(revealOrFlag, i, j)}
                 minesAdjacent={tile.adjacentMines}
                 isRevealed={tile.isRevealed}
                 isMine={tile.isMine}

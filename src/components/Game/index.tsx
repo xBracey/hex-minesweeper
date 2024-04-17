@@ -10,10 +10,14 @@ interface IGame {
 const Game = ({ isStarted, firstTileClicked, setFirstTileClicked }: IGame) => {
   const { state, dispatch } = useBoardStore();
 
-  const onTileClick = (event: React.MouseEvent, x: number, y: number) => {
-    event.preventDefault();
+  const onTileClick = (
+    revealOrFlag: "reveal" | "flag",
+    x: number,
+    y: number
+  ) => {
+    console.log("onTileClick", revealOrFlag, x, y);
 
-    if (event.button === 2) {
+    if (revealOrFlag === "flag") {
       dispatch({ type: "FLAG_TILE", payload: { x, y } });
       return;
     }
@@ -30,7 +34,7 @@ const Game = ({ isStarted, firstTileClicked, setFirstTileClicked }: IGame) => {
     <div
       className="mx-auto pb-4"
       style={{
-        touchAction: state.gameState !== "playing" ? "none" : "auto",
+        touchAction: "manipulation",
         pointerEvents: state.gameState !== "playing" ? "none" : "auto",
       }}
     >

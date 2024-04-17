@@ -18,7 +18,7 @@ const Levels = ({ onClickStart }: ILevels) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex gap-4">
+      <div className="flex gap-2 md:gap-4">
         <Button onClick={() => onClickStart(easy.width, easy.numberOfMines)}>
           Easy
         </Button>
@@ -32,10 +32,7 @@ const Levels = ({ onClickStart }: ILevels) => {
         </Button>
       </div>
       {/* Custom */}
-      <div
-        className="flex  items-center justify-center gap-6 p-4"
-        style={{ width: "400px" }}
-      >
+      <div className="mt-8 flex flex-col items-center justify-center gap-3 p-4 md:flex-row md:gap-6">
         <NumberInput value={width} setValue={setWidth} label="Width" />
         <NumberInput
           value={numberOfMines}

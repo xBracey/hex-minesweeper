@@ -20,7 +20,7 @@ const NumberInput = ({ value, setValue, label }: NumberInputProps) => {
     <div className="flex flex-col">
       <label
         htmlFor="numberInput"
-        className="mb-2 text-sm font-medium text-gray-700"
+        className="mb-2 text-center text-sm font-medium text-gray-700"
       >
         {label}
       </label>

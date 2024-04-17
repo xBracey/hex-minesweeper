@@ -7,9 +7,16 @@ import GameOverModal from "./components/GameOverModal";
 import { Flag } from "./components/Icons/Flag";
 
 function App() {
+  const [isInPwa, setIsInPwa] = useState(false);
   const { state, dispatch } = useBoardStore();
   const [isStarted, setIsStarted] = useState(false);
   const [firstTileClicked, setFirstTileClicked] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setIsInPwa(true);
+    }
+  }, []);
 
   const onClickStart = (width: number = 14, numberOfMines: number = 40) => {
     setIsStarted(true);
@@ -37,19 +44,24 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-gray-200 font-orbitron">
+    <div
+      className="flex w-screen items-center justify-center bg-gray-200 px-2 font-orbitron"
+      style={{
+        height: isInPwa ? "100vh" : "100dvh",
+      }}
+    >
       <div
-        className="flex flex-col items-center rounded-md border-8 border-gray-600 bg-gray-400 p-4 text-white"
+        className="flex flex-col items-center rounded-md border-8 border-gray-600 bg-gray-400 px-4 text-white"
         style={{
-          minWidth: "700px",
+          maxHeight: isInPwa ? "calc(100vh - 32px)" : "calc(100dvh - 16px)",
         }}
       >
-        <div className="flex w-full items-center justify-between p-4">
+        <div className="flex w-full flex-wrap items-center justify-between p-4 md:px-8">
           {state.gameState !== "idle" && (
             <Button onClick={onClickReset}>Reset</Button>
           )}
 
-          <h1 className="flex-1 text-center text-2xl font-bold">
+          <h1 className="order-first w-full pb-4 text-center text-lg font-bold md:order-none md:w-auto md:flex-1 md:pb-0 md:text-2xl">
             Hexagonal Minesweeper
           </h1>
 
